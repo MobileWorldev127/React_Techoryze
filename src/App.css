@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+.react-chatbot-kit-chat-container {
+  width: 500px;
+  height: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.react-chatbot-kit-chat-bot-message {
+  margin-left: 0%;
+}
+.react-chatbot-kit-chat-inner-container {
+  height: 100%;
+}
+.react-chatbot-kit-chat-message-container {
+  height: 85%;
+}
+.react-chatbot-kit-chat-bot-message {
+  width: auto;
+}

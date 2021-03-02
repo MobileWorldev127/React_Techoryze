@@ -1,6 +1,8 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { InputGroup, InputGroupAddon, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
+
 const Header = ({ onSubmitSearch }) => {
   const [city, setCity] = useState('');
 
