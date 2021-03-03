@@ -14,10 +14,6 @@ const Main = () => {
   const dispatch = useDispatch();
   const [toggleBot, setToggleBot] = useState(false);
 
-  useEffect(() => {
-    // dispatch(getWeatherForcast({ city: 'London' }));
-  }, [dispatch]);
-
   const saveMessages = (messages) => {
     localStorage.setItem('chat_messages', JSON.stringify(messages));
   };
