@@ -1,6 +1,8 @@
 .todos-widget {
-  color: '#1d1d1d';
-  flex-direction: row;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding-left: 50px;
 }
 
 .todos-widget-list {
@@ -10,7 +12,7 @@
 }
 
 .todos-widget-list-item {
-  margin: 8px 5px 0;
+  margin: 3px;
   width: 100px;
   background-color: #2898ec;
   text-align: center;

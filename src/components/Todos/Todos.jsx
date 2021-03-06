@@ -37,11 +37,7 @@ const Todos = (props) => {
     });
   };
 
-  return (
-    <div className="todos-widget">
-      <ul className="todos-widget-list">{renderTodos()}</ul>
-    </div>
-  );
+  return <div className="todos-widget">{renderTodos()}</div>;
 };
 
 export default Todos;

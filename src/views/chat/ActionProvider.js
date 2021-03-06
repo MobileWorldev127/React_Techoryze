@@ -1,6 +1,6 @@
+import axios from 'axios';
+
 class ActionProvider {
-  // The action provider receives createChatBotMessage which you can use to define the bots response, and
-  // the setState function that allows for manipulating the bots internal state.
   constructor(createChatBotMessage, setStateFunc, createClientMessage) {
     this.createChatBotMessage = createChatBotMessage;
     this.setState = setStateFunc;
@@ -30,6 +30,20 @@ class ActionProvider {
       withAvatar: true,
     });
     this.addMessageToBotState(message1);
+    axios
+      .post(
+        'https://techoryze-node-deploy.herokuapp.com/conversation/update_conversation',
+        {
+          key: 'environment',
+          value: val,
+        }
+      )
+      .then((json) => {
+        console.log('success', json.data);
+      })
+      .catch((error) => {
+        console.log('errror', error);
+      });
   };
 
   handleWorries = () => {
@@ -40,10 +54,22 @@ class ActionProvider {
       }
     );
     this.addMessageToBotState(message);
-    const message1 = this.createChatBotMessage(`You are connected to [Name2]`, {
-      withAvatar: true,
-    });
-    this.addMessageToBotState(message1);
+    axios
+      .get(
+        'https://techoryze-node-deploy.herokuapp.com/conversation/get_conversation'
+      )
+      .then((json) => {
+        const message1 = this.createChatBotMessage(
+          `You are connected to ${json.data.data[0].expert}`,
+          {
+            withAvatar: true,
+          }
+        );
+        this.addMessageToBotState(message1);
+      })
+      .catch((error) => {
+        console.log('errror', error);
+      });
   };
 
   addMessageToBotState = (messages) => {
