@@ -1,9 +1,8 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Main from './views/weather/main';
+// import { Route, Switch } from 'react-router-dom';
+// import Main from './views/weather/main';
 import Chat from './views/chat/Chat';
 import './App.css';
-import Chatbot from 'react-chatbot-kit';
 function App() {
   return (
     <div className="App">
