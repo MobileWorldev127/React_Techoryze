@@ -6,12 +6,9 @@ import Todos from '../../components/Todos/Todos';
 
 const config = {
   initialMessages: [createChatBotMessage(`Hi, What's your name?`)],
-  botName: 'Bot',
+  botName: 'T',
   customComponents: {
     botAvatar: (props) => <BotAvatar {...props} />,
-  },
-  state: {
-    movieTitles: ['The lord of the rings', 'Con Air'],
   },
   widgets: [
     {

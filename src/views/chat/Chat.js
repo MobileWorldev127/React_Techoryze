@@ -6,6 +6,10 @@ import ActionProvider from './ActionProvider';
 import config from './config';
 import axios from 'axios';
 
+import socketIOClient from 'socket.io-client';
+const ENDPOINT = 'https://techoryze-node-deploy.herokuapp.com';
+const socket = socketIOClient(ENDPOINT);
+
 const Main = () => {
   const dispatch = useDispatch();
 
@@ -23,16 +27,11 @@ const Main = () => {
       .catch((error) => {
         console.log('errror', error);
       });
+    socket.emit('join', {
+      user: '6047cb45047eabf185e8be81',
+      receiver: '6047cb45047eabf185e8be83',
+    });
   }, [dispatch]);
-
-  // const saveMessages = (messages) => {
-  //   localStorage.setItem('chat_messages', JSON.stringify(messages));
-  // };
-
-  // const loadMessages = () => {
-  //   const messages = JSON.parse(localStorage.getItem('chat_messages'));
-  //   return messages;
-  // };
 
   return (
     <Chatbot
@@ -41,6 +40,7 @@ const Main = () => {
       messageParser={MessageParser}
       // saveMessages={saveMessages}
       actionProvider={ActionProvider}
+      headerText="User"
     />
   );
 };

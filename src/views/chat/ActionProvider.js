@@ -72,6 +72,16 @@ class ActionProvider {
       });
   };
 
+  realTimeMessage = (data) => {
+    console.log('@@@@');
+    if (data.sender === '6047cb45047eabf185e8be83') {
+      const message = this.createChatBotMessage(`${data.text}`, {
+        withAvatar: true,
+      });
+      this.addMessageToBotState(message);
+    }
+  };
+
   addMessageToBotState = (messages) => {
     if (Array.isArray(messages)) {
       this.setState((state) => ({
@@ -79,10 +89,17 @@ class ActionProvider {
         messages: [...state.messages, ...messages],
       }));
     } else {
-      this.setState((state) => ({
-        ...state,
-        messages: [...state.messages, messages],
-      }));
+      this.setState((state) => {
+        const lastMessage = state.messages[state.messages.length - 1];
+        if (lastMessage.message !== messages.message) {
+          return {
+            ...state,
+            messages: [...state.messages, messages],
+          };
+        } else {
+          return state;
+        }
+      });
     }
   };
 }

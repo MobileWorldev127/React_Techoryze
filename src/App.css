@@ -55,4 +55,5 @@
 }
 .react-chatbot-kit-chat-bot-message {
   width: auto;
+  max-width: 300px;
 }
