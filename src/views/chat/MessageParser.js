@@ -1,6 +1,6 @@
-import axios from 'axios';
+import apiCall from '../../libs/apiCall';
+import ApiConstants from '../../api/ApiConstants';
 import socketIOClient from 'socket.io-client';
-const ENDPOINT = 'https://techoryze-node-deploy.herokuapp.com';
 
 class MessageParser {
   constructor(actionProvider, state) {
@@ -10,56 +10,38 @@ class MessageParser {
 
   async parse(message) {
     console.log(this.state);
-    const socket = socketIOClient(ENDPOINT);
+    const socket = socketIOClient(ApiConstants.BASE_URL);
 
     socket.on('incomingMessage', (data) => {
-      console.log('---', data);
+      console.log('result:', data);
       this.actionProvider.realTimeMessage(data);
     });
 
     const lowercase = message.toLowerCase();
     if (this.state.messages.length === 1) {
       this.actionProvider.handleEnvironment(message);
-      axios
-        .post(
-          'https://techoryze-node-deploy.herokuapp.com/conversation/update_conversation',
-          {
-            key: 'user',
-            value: message,
-          }
-        )
-        .then((json) => {
-          console.log('success', json.data);
-        })
-        .catch((error) => {
-          console.log('errror', error);
-        });
-    }
-
-    if (
-      lowercase.includes('google') ||
-      lowercase.includes('apple') ||
-      lowercase.includes('microsoft')
-    ) {
-      this.actionProvider.handleProblem();
+      apiCall(
+        ApiConstants.UPDATE_CONVERSATION,
+        {
+          key: 'user',
+          value: message,
+        },
+        'POST'
+      );
     }
 
     if (this.state.messages.length === 5) {
-      this.actionProvider.handleWorries();
-      axios
-        .post(
-          'https://techoryze-node-deploy.herokuapp.com/conversation/update_conversation',
-          {
-            key: 'problem',
-            value: message,
-          }
-        )
-        .then((json) => {
-          console.log('success', json.data);
-        })
-        .catch((error) => {
-          console.log('errror', error);
-        });
+      // this.actionProvider.handleWorries();
+      apiCall(
+        ApiConstants.UPDATE_CONVERSATION,
+        {
+          key: 'problem',
+          value: message,
+        },
+        'POST'
+      ).then(() => {
+        this.actionProvider.handleWorries();
+      });
     }
 
     if (this.state.messages.length > 7) {

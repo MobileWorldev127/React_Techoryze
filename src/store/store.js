@@ -27,7 +27,6 @@ const transformCircular = createTransform(
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['weather'],
   transforms: [transformCircular],
 };
 

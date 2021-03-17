@@ -1,38 +1,33 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Button } from 'reactstrap';
-import './Todos.css';
+import './EndChatView.css';
 
-const Todos = (props) => {
+const EndChatView = (props) => {
   const todos = [
     {
       id: 0,
-      title: 'Google',
-      handler: props.actionProvider.handleAnswerEnvironment,
+      title: 'Yes',
+      handler: props.actionProvider.handleAnswerEndChat,
     },
     {
       id: 1,
-      title: 'Apple',
-      handler: props.actionProvider.handleAnswerEnvironment,
-    },
-    {
-      id: 2,
-      title: 'Microsoft',
-      handler: props.actionProvider.handleAnswerEnvironment,
+      title: 'No',
+      handler: props.actionProvider.handleAnswerEndChat,
     },
   ];
 
   const renderTodos = () => {
     return todos.map((tudo) => {
       return (
-        <button
+        <Button
           key={tudo.id}
           className="todos-widget-list-item"
-          // variant="contained"
+          variant="contained"
           onClick={() => tudo.handler(tudo.title)}
         >
           {tudo.title}
-        </button>
+        </Button>
       );
     });
   };
@@ -40,4 +35,4 @@ const Todos = (props) => {
   return <div className="todos-widget">{renderTodos()}</div>;
 };
 
-export default Todos;
+export default EndChatView;

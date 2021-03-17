@@ -1,4 +1,5 @@
-import axios from 'axios';
+import apiCall from '../../libs/apiCall';
+import ApiConstants from '../../api/ApiConstants';
 
 class ActionProvider {
   constructor(createChatBotMessage, setStateFunc, createClientMessage) {
@@ -14,13 +15,6 @@ class ActionProvider {
     this.addMessageToBotState(message);
   };
 
-  handleProblem = () => {
-    const message = this.createChatBotMessage('What`s the problem?', {
-      withAvatar: true,
-    });
-    this.addMessageToBotState(message);
-  };
-
   handleAnswerEnvironment = (val) => {
     const message = this.createClientMessage(val, {
       withAvatar: true,
@@ -30,20 +24,14 @@ class ActionProvider {
       withAvatar: true,
     });
     this.addMessageToBotState(message1);
-    axios
-      .post(
-        'https://techoryze-node-deploy.herokuapp.com/conversation/update_conversation',
-        {
-          key: 'environment',
-          value: val,
-        }
-      )
-      .then((json) => {
-        console.log('success', json.data);
-      })
-      .catch((error) => {
-        console.log('errror', error);
-      });
+    apiCall(
+      ApiConstants.UPDATE_CONVERSATION,
+      {
+        key: 'environment',
+        value: val,
+      },
+      'POST'
+    );
   };
 
   handleWorries = () => {
@@ -54,31 +42,58 @@ class ActionProvider {
       }
     );
     this.addMessageToBotState(message);
-    axios
-      .get(
-        'https://techoryze-node-deploy.herokuapp.com/conversation/get_conversation'
-      )
-      .then((json) => {
-        const message1 = this.createChatBotMessage(
-          `You are connected to ${json.data.data[0].expert}`,
-          {
-            withAvatar: true,
-          }
-        );
-        this.addMessageToBotState(message1);
-      })
-      .catch((error) => {
-        console.log('errror', error);
-      });
+    apiCall(ApiConstants.GET_CONVERSATION, 'GET').then((json) => {
+      const message1 = this.createChatBotMessage(
+        `You are connected to ${json.data[0].expert}`,
+        {
+          withAvatar: true,
+        }
+      );
+      this.addMessageToBotState(message1);
+    });
   };
 
   realTimeMessage = (data) => {
-    console.log('@@@@');
     if (data.sender === '6047cb45047eabf185e8be83') {
       const message = this.createChatBotMessage(`${data.text}`, {
         withAvatar: true,
       });
       this.addMessageToBotState(message);
+    }
+  };
+
+  handleEndChat = () => {
+    const message = this.createChatBotMessage('Do you want to end the chat?', {
+      widget: 'endChatView',
+    });
+    this.addMessageToBotState(message);
+  };
+
+  handleAnswerEndChat = (val) => {
+    const message = this.createClientMessage(val, {
+      withAvatar: true,
+    });
+    this.addMessageToBotState(message);
+    if (val === 'Yes') {
+      apiCall(ApiConstants.GET_CONVERSATION, 'GET').then((json) => {
+        const message1 = this.createChatBotMessage(
+          `OK. How did ${json.data[0].expert} do?`,
+          {
+            widget: 'ratingView',
+          }
+        );
+        this.addMessageToBotState(message1);
+      });
+    } else {
+      apiCall(ApiConstants.GET_CONVERSATION, 'GET').then((json) => {
+        const message1 = this.createChatBotMessage(
+          `Ok. ${json.data[0].expert} is still here.`,
+          {
+            withAvatar: true,
+          }
+        );
+        this.addMessageToBotState(message1);
+      });
     }
   };
 
