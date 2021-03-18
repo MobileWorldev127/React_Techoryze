@@ -8,28 +8,28 @@ const RatingView = (props) => {
   const todos = [
     {
       id: 0,
-      country: [{}],
-      handler: props.actionProvider.handleAnswerEndChat,
+      rating: [{}, {}, {}, {}, {}],
+      handler: props.actionProvider.handleRating,
     },
     {
       id: 1,
-      country: [{}, {}],
-      handler: props.actionProvider.handleAnswerEndChat,
+      rating: [{}, {}, {}, {}],
+      handler: props.actionProvider.handleRating,
     },
     {
       id: 2,
-      country: [{}, {}, {}],
-      handler: props.actionProvider.handleAnswerEndChat,
+      rating: [{}, {}, {}],
+      handler: props.actionProvider.handleRating,
     },
     {
       id: 3,
-      country: [{}, {}, {}, {}],
-      handler: props.actionProvider.handleAnswerEndChat,
+      rating: [{}, {}],
+      handler: props.actionProvider.handleRating,
     },
     {
       id: 4,
-      country: [{}, {}, {}, {}, {}],
-      handler: props.actionProvider.handleAnswerEndChat,
+      rating: [{}],
+      handler: props.actionProvider.handleRating,
     },
   ];
 
@@ -40,9 +40,9 @@ const RatingView = (props) => {
           key={tudo.id}
           className="rating-widget-list-item"
           // variant="contained"
-          onClick={() => tudo.handler(tudo.title)}
+          onClick={() => tudo.handler(tudo.rating.length)}
         >
-          {tudo.country.map((item, index) => (
+          {tudo.rating.map((item, index) => (
             <BsStarFill className="chat-rating-icon" key={index} />
           ))}
         </button>

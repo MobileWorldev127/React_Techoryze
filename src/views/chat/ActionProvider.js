@@ -64,6 +64,7 @@ class ActionProvider {
 
   handleEndChat = () => {
     const message = this.createChatBotMessage('Do you want to end the chat?', {
+      withAvatar: true,
       widget: 'endChatView',
     });
     this.addMessageToBotState(message);
@@ -87,7 +88,7 @@ class ActionProvider {
     } else {
       apiCall(ApiConstants.GET_CONVERSATION, 'GET').then((json) => {
         const message1 = this.createChatBotMessage(
-          `Ok. ${json.data[0].expert} is still here.`,
+          `Sure. ${json.data[0].expert} is still here.`,
           {
             withAvatar: true,
           }
@@ -95,6 +96,47 @@ class ActionProvider {
         this.addMessageToBotState(message1);
       });
     }
+  };
+
+  handleRating = (val) => {
+    var message = '';
+    switch (val) {
+      case 1:
+        message = this.createClientMessage(`⭐`);
+        break;
+      case 2:
+        message = this.createClientMessage(`⭐⭐`);
+        break;
+      case 3:
+        message = this.createClientMessage(`⭐⭐⭐`);
+        break;
+      case 4:
+        message = this.createClientMessage(`⭐⭐⭐⭐`);
+        break;
+      case 5:
+        message = this.createClientMessage(`⭐⭐⭐⭐⭐`);
+        break;
+      default:
+        message = this.createClientMessage(``);
+    }
+    this.addMessageToBotState(message);
+
+    apiCall(ApiConstants.GET_CONVERSATION, 'GET').then((json) => {
+      const message1 = this.createChatBotMessage(
+        `Thanks for the feedback ${json.data[0].user}`
+      );
+      this.addMessageToBotState(message1);
+      setTimeout(() => window.location.reload(), 2500);
+    });
+
+    // apiCall(
+    //   ApiConstants.UPDATE_CONVERSATION,
+    //   {
+    //     key: 'environment',
+    //     value: val,
+    //   },
+    //   'POST'
+    // );
   };
 
   addMessageToBotState = (messages) => {
